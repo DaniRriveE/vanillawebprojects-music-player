@@ -31,11 +31,18 @@ function loadSong(song) {
   title.innerText = song;
   audio.src = `music/${song}.mp3`;
   cover.src = `images/${song}.jpg`;
-  volumePercentage.innerText = 100 + " %";
+  volumePercentage.innerText = Math.round(audio.volume * 100) + " %";
 }
 
 function loadDuration() {
-    lengthTimeStamp.innerText = Math.round(audio.duration);
+  const minutesTotal = Math.floor(audio.duration / 60);
+  let secondsTotal = '';
+  if (audio.duration % 60 < 10) {
+      secondsTotal = '0' + Math.floor(audio.duration % 60);
+  } else {
+      secondsTotal = Math.floor(audio.duration % 60);
+  }
+  lengthTimeStamp.innerText = `${minutesTotal}:${secondsTotal}`;
 }
 
 // Play song
@@ -111,7 +118,15 @@ function updateProgress(e) {
   const progressPercent = (currentTime / duration) * 100;
   progress.style.width = `${progressPercent}%`;
 
-  currentTimeStamp.innerText = Math.round(currentTime / 1) * 1;
+  const minutesPassed = Math.floor(currentTime / 60);
+  let secondsPassed = '';
+  if (currentTime % 60 < 10) {
+      secondsPassed = '0' + Math.floor(currentTime % 60);
+  } else {
+      secondsPassed = Math.floor(currentTime % 60);
+  }
+  
+  currentTimeStamp.innerText = `${minutesPassed}:${secondsPassed}`;
 }
 
 // Set progress bar
